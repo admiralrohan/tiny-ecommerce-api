@@ -1,0 +1,22 @@
+{
+  "name": "tiny-ecommerce-api",
+  "version": "1.0.0",
+  "description": "REST API for e-commerce marketplace",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app"
+  },
+  "author": "Rohan Gayen",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/admiralrohan/tiny-ecommerce-api"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "jsonwebtoken": "^8.5.1",
+    "knex": "^2.3.0",
+    "objection": "^3.0.1",
+    "pg": "^8.8.0"
+  }
+}
