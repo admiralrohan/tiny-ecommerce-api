@@ -15,17 +15,18 @@
         "semi": true,
         "trailingComma": "es5",
         "singleQuote": false,
-        "printWidth": 120,
+        "printWidth": 80,
         "tabWidth": 2
       }
     ],
     "quotes": [
-      2,
+      "error",
       "double",
       {
         "avoidEscape": true
       }
     ],
+    "max-len": ["error", { "code": 80, "tabWidth": 2 }],
     "no-prototype-builtins": 0,
     "no-plusplus": 0,
     "no-inner-declarations": 0,

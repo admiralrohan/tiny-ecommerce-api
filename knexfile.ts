@@ -2,8 +2,6 @@ import dotenv from "dotenv";
 import { knexSnakeCaseMappers } from "objection";
 dotenv.config();
 
-// Conflicting with eslint, yet to figure out the root cause
-// eslint-disable-next-line prettier/prettier
 import {
   dbClient,
   dbHost,
