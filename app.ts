@@ -1,5 +1,4 @@
 import express, { Express, Request, Response } from "express";
-import dotenv from "dotenv";
 
 import authRouter from "./routes/auth";
 import buyerRouter from "./routes/buyer";
@@ -9,8 +8,6 @@ import utilsRouter from "./routes/utils";
 import Knex from "knex";
 import knexConfig from "./knexfile";
 import { Model } from "objection";
-
-dotenv.config();
 
 const app: Express = express();
 const port = process.env.PORT;
