@@ -1,3 +1,7 @@
+/**
+ * We will use this file for importing env variables across the project, won't directly import from .env.
+ */
+
 export const dbClient = process.env.DB_CLIENT;
 export const dbHost = process.env.DB_HOST;
 export const dbUser = process.env.DB_USER;
