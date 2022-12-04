@@ -1,13 +1,32 @@
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 
+import authRouter from "./routes/auth";
+import buyerRouter from "./routes/buyer";
+import sellerRouter from "./routes/seller";
+
 dotenv.config();
 
 const app: Express = express();
 const port = process.env.PORT;
 
+app.use(express.json());
+
+app.use("/api/auth", authRouter);
+app.use("/api/buyer", buyerRouter);
+app.use("/api/seller", sellerRouter);
+
 app.get("/", (req: Request, res: Response) => {
-  res.json({ success: true, message: "Root route" });
+  res.status(200).json({ success: true, message: "Root route" });
+});
+
+app.use((req: Request, res: Response) => {
+  res.status(404);
+
+  // respond with json
+  if (req.accepts("json")) {
+    res.json({ success: false, message: "Route not found" });
+  }
 });
 
 app.listen(port, () => {
