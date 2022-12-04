@@ -6,10 +6,22 @@ import buyerRouter from "./routes/buyer";
 import sellerRouter from "./routes/seller";
 import utilsRouter from "./routes/utils";
 
+import Knex from "knex";
+import knexConfig from "./knexfile";
+import { Model } from "objection";
+
 dotenv.config();
 
 const app: Express = express();
 const port = process.env.PORT;
+
+// Initialize knex.
+const knex = Knex(knexConfig.development);
+
+// Bind all Models to the knex instance. You only
+// need to do this once before you use any of
+// your model classes.
+Model.knex(knex);
 
 app.use(express.json());
 
