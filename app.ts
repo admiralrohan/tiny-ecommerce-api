@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import authRouter from "./routes/auth";
 import buyerRouter from "./routes/buyer";
 import sellerRouter from "./routes/seller";
+import utilsRouter from "./routes/utils";
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use("/api/auth", authRouter);
 app.use("/api/buyer", buyerRouter);
 app.use("/api/seller", sellerRouter);
+app.use("/api/utils", utilsRouter);
 
 app.get("/", (req: Request, res: Response) => {
   res.status(200).json({ success: true, message: "Root route" });
