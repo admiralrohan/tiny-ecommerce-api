@@ -1,5 +1,8 @@
 import express, { Express, Request, Response } from "express";
 
+import dotenv from "dotenv";
+dotenv.config();
+
 import authRouter from "./routes/auth";
 import buyerRouter from "./routes/buyer";
 import sellerRouter from "./routes/seller";
