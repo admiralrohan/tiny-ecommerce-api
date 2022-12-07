@@ -11,5 +11,5 @@ export const dbName = process.env.DB_NAME;
 export const dbPort = process.env.DB_PORT;
 
 export const jwtSecret = process.env.JWT_SECRET;
-export const saltRounds = process.env.SALT_ROUNDS || 10;
+export const saltRounds = Number(process.env.SALT_ROUNDS) || 10;
 export const jwtExpiresIn = process.env.JWT_EXPIRES_IN || "30d";
