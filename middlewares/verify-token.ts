@@ -15,10 +15,11 @@ export async function verifyToken(
     if (!token) throw new Error("Token is required");
     if (!jwtSecret) throw new Error("JWT Secret is required");
     const decoded = jwt.verify(token, jwtSecret);
-    const userId = (decoded as any).id;
+    const { userId, userType } = decoded as any;
 
     (res as any).userId = userId;
     (res as any).token = token;
+    (res as any).userType = userType;
 
     const result = await Tokens.query().findOne({
       userId,

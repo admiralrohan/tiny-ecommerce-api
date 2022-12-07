@@ -73,7 +73,7 @@ router.post("/login", async (req: Request, res: Response) => {
     const isPasswordMatched = await bcrypt.compare(password, user.password);
     if (!isPasswordMatched) throw new Error("Email or password mismatch");
 
-    const token = jwtTokenGenerate(user.id);
+    const token = jwtTokenGenerate({ userId: user.id, userType: user.type });
     await Tokens.query().insert({
       userId: user.id,
       token,
