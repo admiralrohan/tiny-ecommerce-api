@@ -1,5 +1,7 @@
 import dotenv from "dotenv";
 import { knexSnakeCaseMappers } from "objection";
+
+// Need to initialize here along with `app.ts` also to run migrations
 dotenv.config();
 
 import {

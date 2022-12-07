@@ -5,13 +5,9 @@ import { userTypes } from "../configs/constants";
 import Tokens from "../models/tokens";
 import Users from "../models/users";
 import jwtTokenGenerate from "../utils/jwt-token-generate";
-// import { jwtSecret, saltRounds } from "../configs/config";
+import { jwtSecret, saltRounds } from "../configs/config";
 
 const router = Router();
-
-export const jwtSecret = process.env.JWT_SECRET;
-export const saltRounds = Number(process.env.SALT_ROUNDS) || 10;
-export const jwtExpiresIn = process.env.JWT_EXPIRES_IN || "30d";
 
 router.post("/register", async (req: Request, res: Response) => {
   try {
