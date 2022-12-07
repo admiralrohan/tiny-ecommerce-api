@@ -1,13 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { jwtSecret } from "../configs/config";
+import { JwtPayload } from "../interfaces/jwt-payload";
 import Tokens from "../models/tokens";
-
-interface JwtPayload {
-  userId: string;
-  userType: string;
-  time: number;
-}
 
 export async function verifyToken(
   req: Request,
@@ -20,8 +15,8 @@ export async function verifyToken(
 
     if (!token) throw new Error("Token is required");
     if (!jwtSecret) throw new Error("JWT Secret is required");
-    const decoded = jwt.verify(token, jwtSecret);
-    const { userId, userType } = decoded as JwtPayload;
+    const decoded = jwt.verify(token, jwtSecret) as JwtPayload;
+    const { userId, userType } = decoded;
 
     res.userId = Number(userId);
     res.token = token;
