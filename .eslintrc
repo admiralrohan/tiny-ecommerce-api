@@ -26,7 +26,7 @@
         "avoidEscape": true
       }
     ],
-    "max-len": ["error", { "code": 80, "tabWidth": 2 }],
+    "max-len": ["error", { "code": 80, "tabWidth": 2, "comments": 120 }],
     "no-prototype-builtins": 0,
     "no-plusplus": 0,
     "no-inner-declarations": 0,
