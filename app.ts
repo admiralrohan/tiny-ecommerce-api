@@ -13,6 +13,7 @@ import knexConfig from "./knexfile";
 import { Model } from "objection";
 import { verifyToken } from "./middlewares/verify-token";
 import { allowIfBuyer } from "./middlewares/allow-if-buyer";
+import { allowIfSeller } from "./middlewares/allow-if-seller";
 
 const app: Express = express();
 const port = process.env.PORT;
@@ -28,8 +29,9 @@ Model.knex(knex);
 app.use(express.json());
 
 app.use("/api/auth", authRouter);
+// Auth middlewares are used here to reduce redundancy across all request handlers
 app.use("/api/buyer", verifyToken, allowIfBuyer, buyerRouter);
-app.use("/api/seller", sellerRouter);
+app.use("/api/seller", verifyToken, allowIfSeller, sellerRouter);
 app.use("/api/utils", utilsRouter);
 
 app.get("/", (req: Request, res: Response) => {
