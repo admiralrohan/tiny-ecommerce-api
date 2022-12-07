@@ -27,3 +27,4 @@ npm run dev
 - API response format `{ success: boolean, message: string, data?: Object, error?: string }`
 - Don't have any separate Entity for `catalog` as we can only have one catalog per seller at a time. So keeping the list of products along with `user` entity to make it simple.
   - The downside is there are no DB-level check for whether the catalog products belong to the seller i.e the seller can sell products from other seller, or non-existent products. But there are checks at API controller level against that.
+- For now no option to delete products. User can deactivate it.
