@@ -105,8 +105,8 @@ router.post("/logout", verifyToken, async (req: Request, res: Response) => {
         loggedOutAt: new Date(),
       })
       .where({
-        userId: (res as any).userId,
-        token: (res as any).token,
+        userId: res.userId,
+        token: res.token,
         loggedOutAt: null,
       });
 

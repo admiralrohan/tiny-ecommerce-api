@@ -9,7 +9,7 @@ export async function allowIfBuyer(
   next: NextFunction
 ) {
   try {
-    if ((res as any).userType !== "buyer")
+    if (res.userType !== "buyer")
       throw new Error("Route is only available for buyers");
 
     next();

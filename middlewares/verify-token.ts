@@ -17,9 +17,9 @@ export async function verifyToken(
     const decoded = jwt.verify(token, jwtSecret);
     const { userId, userType } = decoded as any;
 
-    (res as any).userId = userId;
-    (res as any).token = token;
-    (res as any).userType = userType;
+    res.userId = Number(userId);
+    res.token = token;
+    res.userType = userType;
 
     const result = await Tokens.query().findOne({
       userId,
