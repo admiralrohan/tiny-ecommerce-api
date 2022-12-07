@@ -1,4 +1,5 @@
 import { Request, Response, Router } from "express";
+import { allowIfBuyer } from "../middlewares/allow-if-buyer";
 import { verifyToken } from "../middlewares/verify-token";
 import Users from "../models/users";
 
@@ -7,11 +8,9 @@ const router = Router();
 router.get(
   "/list-of-sellers",
   verifyToken,
+  allowIfBuyer,
   async (req: Request, res: Response) => {
     try {
-      if ((res as any).userType !== "buyer")
-        throw new Error("Route is only available for buyers");
-
       const listOfSellers = await Users.query()
         .select("id", "username", "email")
         .where({ type: "seller" });
