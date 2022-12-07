@@ -11,6 +11,8 @@ import utilsRouter from "./routes/utils";
 import Knex from "knex";
 import knexConfig from "./knexfile";
 import { Model } from "objection";
+import { verifyToken } from "./middlewares/verify-token";
+import { allowIfBuyer } from "./middlewares/allow-if-buyer";
 
 const app: Express = express();
 const port = process.env.PORT;
@@ -26,7 +28,7 @@ Model.knex(knex);
 app.use(express.json());
 
 app.use("/api/auth", authRouter);
-app.use("/api/buyer", buyerRouter);
+app.use("/api/buyer", verifyToken, allowIfBuyer, buyerRouter);
 app.use("/api/seller", sellerRouter);
 app.use("/api/utils", utilsRouter);
 

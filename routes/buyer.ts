@@ -1,38 +1,31 @@
 import { Request, Response, Router } from "express";
-import { allowIfBuyer } from "../middlewares/allow-if-buyer";
-import { verifyToken } from "../middlewares/verify-token";
 import Users from "../models/users";
 
 const router = Router();
 
-router.get(
-  "/list-of-sellers",
-  verifyToken,
-  allowIfBuyer,
-  async (req: Request, res: Response) => {
-    try {
-      const listOfSellers = await Users.query()
-        .select("id", "username", "email")
-        .where({ type: "seller" });
+router.get("/list-of-sellers", async (req: Request, res: Response) => {
+  try {
+    const listOfSellers = await Users.query()
+      .select("id", "username", "email")
+      .where({ type: "seller" });
 
-      res.json({
-        success: true,
-        message: "Fetched list of sellers successfully",
-        data: {
-          listOfSellers,
-        },
+    res.json({
+      success: true,
+      message: "Fetched list of sellers successfully",
+      data: {
+        listOfSellers,
+      },
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(400).json({
+        success: false,
+        message: "Couldn't fetch list of sellers",
+        error: error.message,
       });
-    } catch (error) {
-      if (error instanceof Error) {
-        res.status(400).json({
-          success: false,
-          message: "Couldn't fetch list of sellers",
-          error: error.message,
-        });
-      }
     }
   }
-);
+});
 
 router.get("/seller-catalog/:seller_id", (req: Request, res: Response) => {
   res.json({ success: true, message: "Fetched seller catalog successfully" });
