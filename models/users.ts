@@ -9,4 +9,15 @@ export default class Users extends Model {
   password!: string;
   type!: string;
   createdAt!: Date;
+  catalog!: number[];
+
+  static get jsonSchema() {
+    return {
+      type: "object",
+      properties: {
+        // It would automatically serialized and deserialized by ObjectionJs
+        catalog: { type: "array" },
+      },
+    };
+  }
 }
