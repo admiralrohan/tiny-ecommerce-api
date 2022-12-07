@@ -1,11 +1,11 @@
 import { Request, Response, Router } from "express";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import { userTypes } from "../configs/constants";
 import Tokens from "../models/tokens";
 import Users from "../models/users";
 import jwtTokenGenerate from "../utils/jwt-token-generate";
-import { jwtSecret, saltRounds } from "../configs/config";
+import { saltRounds } from "../configs/config";
+import { verifyToken } from "../middlewares/verify-token";
 
 const router = Router();
 
@@ -98,23 +98,15 @@ router.post("/login", async (req: Request, res: Response) => {
   }
 });
 
-router.post("/logout", async (req: Request, res: Response) => {
+router.post("/logout", verifyToken, async (req: Request, res: Response) => {
   try {
-    if (!req.header("Authorization")) throw new Error("Auth token missing");
-    const token = req.header("Authorization")?.replace("Bearer ", "");
-
-    if (!token) throw new Error("Token is required");
-    if (!jwtSecret) throw new Error("JWT Secret is required");
-    const decoded = jwt.verify(token, jwtSecret);
-    const userId = (decoded as any).id;
-
     const result = await Tokens.query()
       .patch({
         loggedOutAt: new Date(),
       })
       .where({
-        userId,
-        token,
+        userId: (res as any).userId,
+        token: (res as any).token,
         loggedOutAt: null,
       });
 
