@@ -34,6 +34,7 @@ app.use("/api/buyer", verifyToken, allowIfBuyer, buyerRouter);
 app.use("/api/seller", verifyToken, allowIfSeller, sellerRouter);
 app.use("/api/utils", utilsRouter);
 
+// Can be used for Server health checks by AWS
 app.get("/", (req: Request, res: Response) => {
   res.status(200).json({ success: true, message: "Root route" });
 });
