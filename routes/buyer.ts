@@ -45,7 +45,9 @@ router.get(
       const { catalog: productIds, type: userType } = userDetails;
       if (userType !== "seller") throw new Error("User is not a seller");
 
-      const productList = await Products.query().whereIn("id", productIds);
+      const productList = await Products.query()
+        .whereIn("id", productIds)
+        .andWhere({ isActive: true });
 
       res.json({
         success: true,
