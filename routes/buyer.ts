@@ -70,11 +70,20 @@ router.get(
 );
 
 router.post("/create-order/:seller_id", async (req: Request, res: Response) => {
-  // TODO: Exclude own products
   try {
     const { seller_id: sellerId } = req.params;
     const { productIds } = req.body;
 
+    // Validation 1
+    const [buyerDetails, sellerDetails] = await Users.query().whereIn("id", [
+      res.userId,
+      sellerId,
+    ]);
+
+    if (buyerDetails.email === sellerDetails.email)
+      throw new Error("Can't buy from same user");
+
+    // Validation 2
     const matchingProducts = await Products.query()
       .whereIn("id", productIds)
       .andWhere({ isActive: true, ownerId: sellerId });
@@ -82,7 +91,7 @@ router.post("/create-order/:seller_id", async (req: Request, res: Response) => {
     if (matchingProducts.length !== productIds.length)
       throw new Error("You can only add products from the seller catalog");
 
-    // Verification done, now create the order
+    // Validation done, now create the order
     const insertedResult = await Orders.query().insert({
       buyerId: res.userId,
       sellerId: Number(sellerId),
@@ -95,8 +104,6 @@ router.post("/create-order/:seller_id", async (req: Request, res: Response) => {
     res.json({
       success: true,
       message: "Order creation successful",
-      matchingProducts,
-      insertedResult,
     });
   } catch (error) {
     if (error instanceof Error) {
