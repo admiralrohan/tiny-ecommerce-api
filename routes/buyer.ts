@@ -1,4 +1,5 @@
 import { Request, Response, Router } from "express";
+import Orders from "../models/order";
 import Products from "../models/product";
 import Users from "../models/users";
 
@@ -68,9 +69,44 @@ router.get(
   }
 );
 
-router.post("/create-order/:seller_id", (req: Request, res: Response) => {
+router.post("/create-order/:seller_id", async (req: Request, res: Response) => {
   // TODO: Exclude own products
-  res.json({ success: true, message: "Order creation successful" });
+  try {
+    const { seller_id: sellerId } = req.params;
+    const { productIds } = req.body;
+
+    const matchingProducts = await Products.query()
+      .whereIn("id", productIds)
+      .andWhere({ isActive: true, ownerId: sellerId });
+
+    if (matchingProducts.length !== productIds.length)
+      throw new Error("You can only add products from the seller catalog");
+
+    // Verification done, now create the order
+    const insertedResult = await Orders.query().insert({
+      buyerId: res.userId,
+      sellerId: Number(sellerId),
+      productIds,
+      createdAt: new Date(),
+    });
+
+    if (!insertedResult.id) throw new Error("DB error");
+
+    res.json({
+      success: true,
+      message: "Order creation successful",
+      matchingProducts,
+      insertedResult,
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(400).json({
+        success: false,
+        message: "Couldn't create order",
+        error: error.message,
+      });
+    }
+  }
 });
 
 export default router;
