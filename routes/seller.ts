@@ -67,7 +67,7 @@ router.get("/orders", async (req: Request, res: Response) => {
       });
     });
 
-    // Remove "ownerId", redundant info
+    // Remove "ownerId", redundant info as all products are owned by seller itself
     const productList = await Products.query()
       .select("id", "name", "price", "isActive", "createdAt")
       .whereIn("id", Array.from(uniqueProductIds));
