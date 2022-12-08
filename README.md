@@ -4,6 +4,8 @@ REST API for e-commerce marketplace
 
 Tech Used: NodeJS, Postgres
 
+Check list of available APIs here https://documenter.getpostman.com/view/3660544/2s8YzQX4NB
+
 ## Run the project
 
 After cloning the project, install the packages:
