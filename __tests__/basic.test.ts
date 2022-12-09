@@ -1,6 +1,10 @@
 import request from "supertest";
-import app from "../app";
+import { app } from "../app";
 import { userTypes } from "../configs/constants";
+
+/**
+ * These API routes are not interacting with DB and returns static response
+ */
 
 describe("GET /", () => {
   it("responds properly", async () => {
