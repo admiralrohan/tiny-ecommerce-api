@@ -16,7 +16,6 @@ import { allowIfBuyer } from "./middlewares/allow-if-buyer";
 import { allowIfSeller } from "./middlewares/allow-if-seller";
 
 const app: Express = express();
-const port = process.env.PORT;
 
 // Initialize knex.
 const knex = Knex(knexConfig.development);
@@ -48,16 +47,4 @@ app.use((req: Request, res: Response) => {
   }
 });
 
-const server = app.listen(port, () => {
-  console.log(`Server is running at port ${port}`);
-});
-
-process.on("SIGTERM", () => {
-  console.log("SIGTERM signal received: closing HTTP server");
-  server.close(() => {
-    console.log("HTTP server closed");
-  });
-});
-
-// To use for testing
-export { app, server };
+export default app;

@@ -1,10 +1,6 @@
 import request from "supertest";
-import { app, server } from "../app";
+import app from "../app";
 import { userTypes } from "../configs/constants";
-
-afterAll(() => {
-  server.close();
-});
 
 describe("GET /", function () {
   it("responds with json", async function () {
