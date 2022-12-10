@@ -18,7 +18,8 @@ import { allowIfSeller } from "./middlewares/allow-if-seller";
 const app: Express = express();
 
 // Initialize knex.
-const knex = Knex(knexConfig.development);
+// TODO: Setup `prod` deployment here
+const knex = Knex(knexConfig.dev);
 
 // Bind all Models to the knex instance. You only
 // need to do this once before you use any of

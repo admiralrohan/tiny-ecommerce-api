@@ -6,6 +6,8 @@ Tech Used: NodeJS, Postgres
 
 Check list of available APIs here https://documenter.getpostman.com/view/3660544/2s8YzQX4NB
 
+Postgres installation guide https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-ubuntu-20-04
+
 ## Run the project
 
 After cloning the project, install the packages:
@@ -19,6 +21,18 @@ Then, run the development server:
 ```bash
 npm run dev
 ```
+
+## Other commands
+
+Run test cases `npm t`
+
+Run tests and watch live changes `npm run test:watch`
+
+Check for migrations `knex migrate:list --env dev` (Available DB envs: `dev`, `prod`, `test`)
+
+Run all pending migrations `knex migrate:latest --env dev`
+
+Rollback last migration `knex migrate:rollback`
 
 ## Some assumptions
 
