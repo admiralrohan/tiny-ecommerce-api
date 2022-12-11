@@ -4,6 +4,7 @@ import Users from "../models/users";
 import Tokens from "../models/tokens";
 import jwt from "jsonwebtoken";
 import { currentTime, mockToken } from "../configs/constants";
+import { expectSuccessResponse } from "../utils/test-helpers";
 
 const routePath = "/api/auth/logout";
 
@@ -51,9 +52,10 @@ describe(`POST ${routePath}`, () => {
       .set("Accept", "application/json")
       .set("Authorization", "Bearer " + mockToken);
 
-    expect(response.headers["content-type"]).toMatch(/json/i);
-    expect(response.status).toEqual(200);
-    expect(response.body.success).toBeTruthy();
+    // expect(response.headers["content-type"]).toMatch(/json/i);
+    // expect(response.status).toEqual(200);
+    // expect(response.body.success).toBeTruthy();
+    expectSuccessResponse(response);
   });
 
   it("Saved user data in DB properly", async () => {

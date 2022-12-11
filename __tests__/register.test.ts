@@ -3,6 +3,10 @@ import bcrypt from "bcrypt";
 import app from "../app";
 import Users from "../models/users";
 import { currentTime } from "../configs/constants";
+import {
+  expectErrorResponse,
+  expectSuccessResponse,
+} from "../utils/test-helpers";
 
 const routePath = "/api/auth/register";
 
@@ -12,9 +16,10 @@ describe(`POST ${routePath}`, () => {
       .post(routePath)
       .set("Accept", "application/json");
 
-    expect(response.headers["content-type"]).toMatch(/json/i);
-    expect(response.status).toEqual(400);
-    expect(response.body.success).toBeFalsy();
+    // expect(response.headers["content-type"]).toMatch(/json/i);
+    // expect(response.status).toEqual(400);
+    // expect(response.body.success).toBeFalsy();
+    expectErrorResponse(response);
     expect(response.body.error).toMatch(/username/i);
   });
 
@@ -29,9 +34,10 @@ describe(`POST ${routePath}`, () => {
         type: "seller",
       });
 
-    expect(response.headers["content-type"]).toMatch(/json/i);
-    expect(response.status).toEqual(400);
-    expect(response.body.success).toBeFalsy();
+    // expect(response.headers["content-type"]).toMatch(/json/i);
+    // expect(response.status).toEqual(400);
+    // expect(response.body.success).toBeFalsy();
+    expectErrorResponse(response);
     expect(response.body.error).toMatch(/username/i);
   });
 
@@ -46,9 +52,10 @@ describe(`POST ${routePath}`, () => {
         type: "seller",
       });
 
-    expect(response.headers["content-type"]).toMatch(/json/i);
-    expect(response.status).toEqual(400);
-    expect(response.body.success).toBeFalsy();
+    // expect(response.headers["content-type"]).toMatch(/json/i);
+    // expect(response.status).toEqual(400);
+    // expect(response.body.success).toBeFalsy();
+    expectErrorResponse(response);
     expect(response.body.error).toMatch(/email/i);
   });
 
@@ -63,9 +70,10 @@ describe(`POST ${routePath}`, () => {
         type: "seller",
       });
 
-    expect(response.headers["content-type"]).toMatch(/json/i);
-    expect(response.status).toEqual(400);
-    expect(response.body.success).toBeFalsy();
+    // expect(response.headers["content-type"]).toMatch(/json/i);
+    // expect(response.status).toEqual(400);
+    // expect(response.body.success).toBeFalsy();
+    expectErrorResponse(response);
     expect(response.body.error).toMatch(/password/i);
   });
 
@@ -80,9 +88,10 @@ describe(`POST ${routePath}`, () => {
         type: "seller",
       });
 
-    expect(response.headers["content-type"]).toMatch(/json/i);
-    expect(response.status).toEqual(400);
-    expect(response.body.success).toBeFalsy();
+    // expect(response.headers["content-type"]).toMatch(/json/i);
+    // expect(response.status).toEqual(400);
+    // expect(response.body.success).toBeFalsy();
+    expectErrorResponse(response);
     expect(response.body.error).toMatch(/match/i);
   });
 
@@ -98,9 +107,10 @@ describe(`POST ${routePath}`, () => {
         type: "seller",
       });
 
-    expect(response.headers["content-type"]).toMatch(/json/i);
-    expect(response.status).toEqual(400);
-    expect(response.body.success).toBeFalsy();
+    // expect(response.headers["content-type"]).toMatch(/json/i);
+    // expect(response.status).toEqual(400);
+    // expect(response.body.success).toBeFalsy();
+    expectErrorResponse(response);
     expect(response.body.error).toMatch(/match/i);
   });
 
@@ -115,9 +125,10 @@ describe(`POST ${routePath}`, () => {
         confirmPassword: "1234",
       });
 
-    expect(response.headers["content-type"]).toMatch(/json/i);
-    expect(response.status).toEqual(400);
-    expect(response.body.success).toBeFalsy();
+    // expect(response.headers["content-type"]).toMatch(/json/i);
+    // expect(response.status).toEqual(400);
+    // expect(response.body.success).toBeFalsy();
+    expectErrorResponse(response);
     expect(response.body.error).toMatch(/invalid/i);
   });
 
@@ -133,9 +144,10 @@ describe(`POST ${routePath}`, () => {
         type: "invalid",
       });
 
-    expect(response.headers["content-type"]).toMatch(/json/i);
-    expect(response.status).toEqual(400);
-    expect(response.body.success).toBeFalsy();
+    // expect(response.headers["content-type"]).toMatch(/json/i);
+    // expect(response.status).toEqual(400);
+    // expect(response.body.success).toBeFalsy();
+    expectErrorResponse(response);
     expect(response.body.error).toMatch(/invalid/i);
   });
 
@@ -151,12 +163,13 @@ describe(`POST ${routePath}`, () => {
         type: "seller",
       });
 
-    expect(response.headers["content-type"]).toMatch(/json/i);
-    expect(response.status).toEqual(200);
-    expect(response.body.success).toBeTruthy();
-    expect(response.body).toHaveProperty("message");
-    expect(response.body).toHaveProperty("data");
-    expect(response.body).not.toHaveProperty("error");
+    // expect(response.headers["content-type"]).toMatch(/json/i);
+    // expect(response.status).toEqual(200);
+    // expect(response.body.success).toBeTruthy();
+    // expect(response.body).toHaveProperty("message");
+    // expect(response.body).toHaveProperty("data");
+    // expect(response.body).not.toHaveProperty("error");
+    expectSuccessResponse(response);
   });
 
   it("With used email of different user type", async () => {
@@ -180,12 +193,13 @@ describe(`POST ${routePath}`, () => {
       .set("Accept", "application/json")
       .send(requestBody);
 
-    expect(response.headers["content-type"]).toMatch(/json/i);
-    expect(response.status).toEqual(200);
-    expect(response.body.success).toBeTruthy();
-    expect(response.body).toHaveProperty("message");
-    expect(response.body).toHaveProperty("data");
-    expect(response.body).not.toHaveProperty("error");
+    // expect(response.headers["content-type"]).toMatch(/json/i);
+    // expect(response.status).toEqual(200);
+    // expect(response.body.success).toBeTruthy();
+    // expect(response.body).toHaveProperty("message");
+    // expect(response.body).toHaveProperty("data");
+    // expect(response.body).not.toHaveProperty("error");
+    expectSuccessResponse(response);
   });
 
   it("With used email of same user type", async () => {
@@ -208,12 +222,13 @@ describe(`POST ${routePath}`, () => {
       .set("Accept", "application/json")
       .send(requestBody);
 
-    expect(response.headers["content-type"]).toMatch(/json/i);
-    expect(response.status).toEqual(400);
-    expect(response.body.success).toBeFalsy();
-    expect(response.body).toHaveProperty("message");
-    expect(response.body).not.toHaveProperty("data");
-    expect(response.body).toHaveProperty("error");
+    // expect(response.headers["content-type"]).toMatch(/json/i);
+    // expect(response.status).toEqual(400);
+    // expect(response.body.success).toBeFalsy();
+    // expect(response.body).toHaveProperty("message");
+    // expect(response.body).not.toHaveProperty("data");
+    // expect(response.body).toHaveProperty("error");
+    expectErrorResponse(response);
     expect(response.body.error).toMatch(/already used/i);
   });
 
