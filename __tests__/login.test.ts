@@ -30,9 +30,6 @@ describe(`POST ${routePath}`, () => {
       .post(routePath)
       .set("Accept", "application/json");
 
-    // expect(response.headers["content-type"]).toMatch(/json/i);
-    // expect(response.status).toEqual(400);
-    // expect(response.body.success).toBeFalsy();
     expectErrorResponse(response);
     expect(response.body.error).toMatch(/email/i);
   });
@@ -48,9 +45,7 @@ describe(`POST ${routePath}`, () => {
         type: "seller",
       });
 
-    // expect(response.headers["content-type"]).toMatch(/json/i);
-    // expect(response.status).toEqual(400);
-    // expect(response.body.success).toBeFalsy();
+    expectErrorResponse(response);
     expect(response.body.error).toMatch(/email/i);
   });
 
@@ -65,9 +60,6 @@ describe(`POST ${routePath}`, () => {
         type: "seller",
       });
 
-    // expect(response.headers["content-type"]).toMatch(/json/i);
-    // expect(response.status).toEqual(400);
-    // expect(response.body.success).toBeFalsy();
     expectErrorResponse(response);
     expect(response.body.error).toMatch(/password/i);
   });
@@ -83,9 +75,6 @@ describe(`POST ${routePath}`, () => {
         confirmPassword: "1234",
       });
 
-    // expect(response.headers["content-type"]).toMatch(/json/i);
-    // expect(response.status).toEqual(400);
-    // expect(response.body.success).toBeFalsy();
     expectErrorResponse(response);
     expect(response.body.error).toMatch(/invalid/i);
   });
@@ -102,9 +91,6 @@ describe(`POST ${routePath}`, () => {
         type: "invalid",
       });
 
-    // expect(response.headers["content-type"]).toMatch(/json/i);
-    // expect(response.status).toEqual(400);
-    // expect(response.body.success).toBeFalsy();
     expectErrorResponse(response);
     expect(response.body.error).toMatch(/invalid/i);
   });
@@ -122,12 +108,6 @@ describe(`POST ${routePath}`, () => {
         type: "buyer",
       });
 
-    // expect(response.headers["content-type"]).toMatch(/json/i);
-    // expect(response.status).toEqual(400);
-    // expect(response.body.success).toBeFalsy();
-    // expect(response.body).toHaveProperty("message");
-    // expect(response.body).not.toHaveProperty("data");
-    // expect(response.body).toHaveProperty("error");
     expectErrorResponse(response);
     expect(response.body.error).toMatch(/password mismatch/i);
   });
@@ -145,12 +125,6 @@ describe(`POST ${routePath}`, () => {
         type: "buyer",
       });
 
-    // expect(response.headers["content-type"]).toMatch(/json/i);
-    // expect(response.status).toEqual(400);
-    // expect(response.body.success).toBeFalsy();
-    // expect(response.body).toHaveProperty("message");
-    // expect(response.body).not.toHaveProperty("data");
-    // expect(response.body).toHaveProperty("error");
     expectErrorResponse(response);
     expect(response.body.error).toMatch(/no user found/i);
   });
@@ -168,12 +142,6 @@ describe(`POST ${routePath}`, () => {
         type: "seller",
       });
 
-    // expect(response.headers["content-type"]).toMatch(/json/i);
-    // expect(response.status).toEqual(400);
-    // expect(response.body.success).toBeFalsy();
-    // expect(response.body).toHaveProperty("message");
-    // expect(response.body).not.toHaveProperty("data");
-    // expect(response.body).toHaveProperty("error");
     expectErrorResponse(response);
     expect(response.body.error).toMatch(/no user found/i);
   });
@@ -191,12 +159,6 @@ describe(`POST ${routePath}`, () => {
         type: "buyer",
       });
 
-    // expect(response.headers["content-type"]).toMatch(/json/i);
-    // expect(response.status).toEqual(200);
-    // expect(response.body.success).toBeTruthy();
-    // expect(response.body).toHaveProperty("message");
-    // expect(response.body).toHaveProperty("data");
-    // expect(response.body).not.toHaveProperty("error");
     expectSuccessResponse(response);
     expect(response.body.data.token).toBe(mockToken);
   });

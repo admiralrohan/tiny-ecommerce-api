@@ -52,9 +52,6 @@ describe(`POST ${routePath}`, () => {
       .set("Accept", "application/json")
       .set("Authorization", "Bearer " + mockToken);
 
-    // expect(response.headers["content-type"]).toMatch(/json/i);
-    // expect(response.status).toEqual(200);
-    // expect(response.body.success).toBeTruthy();
     expectSuccessResponse(response);
   });
 
