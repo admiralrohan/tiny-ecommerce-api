@@ -20,10 +20,6 @@ beforeEach(async () => {
   });
 });
 
-jest.mock("../utils/jwt-token-generate", () =>
-  jest.fn().mockReturnValue("generatedToken")
-);
-
 describe(`POST ${routePath}`, () => {
   it("Without any body", async () => {
     const response = await request(app)
@@ -190,7 +186,7 @@ describe(`POST ${routePath}`, () => {
     expect(response.body).toHaveProperty("message");
     expect(response.body).toHaveProperty("data");
     expect(response.body).not.toHaveProperty("error");
-    expect(response.body.data.token).toBe("generatedToken");
+    expect(response.body.data.token).toBe("token");
   });
 
   it("Saved user data in DB properly", async () => {
@@ -208,7 +204,7 @@ describe(`POST ${routePath}`, () => {
       {
         id: 1,
         userId: 1,
-        token: "generatedToken",
+        token: "token",
         loggedInAt: currentTime,
         loggedOutAt: null,
       },
