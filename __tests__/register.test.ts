@@ -8,6 +8,7 @@ import Users from "../models/users";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let knex: any;
+const routePath = "/api/auth/register";
 
 beforeEach(async () => {
   knex = Knex(knexConfig.test);
@@ -20,10 +21,10 @@ afterEach(async () => {
   await knex.destroy();
 });
 
-describe("POST /api/auth/register", () => {
+describe(`POST ${routePath}`, () => {
   it("Without any body", async () => {
     const response = await request(app)
-      .post("/api/auth/register")
+      .post(routePath)
       .set("Accept", "application/json");
 
     expect(response.headers["content-type"]).toMatch(/json/i);
@@ -34,7 +35,7 @@ describe("POST /api/auth/register", () => {
 
   it("Without username", async () => {
     const response = await request(app)
-      .post("/api/auth/register")
+      .post(routePath)
       .set("Accept", "application/json")
       .send({
         email: "john@gmail.com",
@@ -51,7 +52,7 @@ describe("POST /api/auth/register", () => {
 
   it("Without email", async () => {
     const response = await request(app)
-      .post("/api/auth/register")
+      .post(routePath)
       .set("Accept", "application/json")
       .send({
         username: "john",
@@ -68,7 +69,7 @@ describe("POST /api/auth/register", () => {
 
   it("Without password", async () => {
     const response = await request(app)
-      .post("/api/auth/register")
+      .post(routePath)
       .set("Accept", "application/json")
       .send({
         username: "john",
@@ -85,7 +86,7 @@ describe("POST /api/auth/register", () => {
 
   it("Without confirmPassword", async () => {
     const response = await request(app)
-      .post("/api/auth/register")
+      .post(routePath)
       .set("Accept", "application/json")
       .send({
         username: "john",
@@ -102,7 +103,7 @@ describe("POST /api/auth/register", () => {
 
   it("With password !== confirmPassword", async () => {
     const response = await request(app)
-      .post("/api/auth/register")
+      .post(routePath)
       .set("Accept", "application/json")
       .send({
         username: "john",
@@ -120,7 +121,7 @@ describe("POST /api/auth/register", () => {
 
   it("Without confirmPassword", async () => {
     const response = await request(app)
-      .post("/api/auth/register")
+      .post(routePath)
       .set("Accept", "application/json")
       .send({
         username: "john",
@@ -138,7 +139,7 @@ describe("POST /api/auth/register", () => {
 
   it("With proper body", async () => {
     const response = await request(app)
-      .post("/api/auth/register")
+      .post(routePath)
       .set("Accept", "application/json")
       .send({
         username: "john",
@@ -173,7 +174,7 @@ describe("POST /api/auth/register", () => {
     await Users.query().insert(queryData);
 
     const response = await request(app)
-      .post("/api/auth/register")
+      .post(routePath)
       .set("Accept", "application/json")
       .send(requestBody);
 
@@ -201,7 +202,7 @@ describe("POST /api/auth/register", () => {
     await Users.query().insert(queryData);
 
     const response = await request(app)
-      .post("/api/auth/register")
+      .post(routePath)
       .set("Accept", "application/json")
       .send(requestBody);
 
@@ -233,7 +234,7 @@ describe("POST /api/auth/register", () => {
     };
 
     const response = await request(app)
-      .post("/api/auth/register")
+      .post(routePath)
       .set("Accept", "application/json")
       .send(requestBody);
 
