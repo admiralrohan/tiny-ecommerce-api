@@ -1,24 +1,15 @@
 import request from "supertest";
 import bcrypt from "bcrypt";
 import app from "../app";
-import Knex from "knex";
-import knexConfig from "./../knexfile";
-import { Model } from "objection";
 import Users from "../models/users";
 import Tokens from "../models/tokens";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-let knex: any;
 const routePath = "/api/auth/login";
 const currentTime = new Date("2022-01-01");
 
 beforeEach(async () => {
   jest.useFakeTimers();
   jest.setSystemTime(currentTime);
-
-  knex = Knex(knexConfig.test);
-  Model.knex(knex);
-  await knex.migrate.latest();
 
   // Need to register a user before login
   await Users.query().insert({
@@ -34,9 +25,6 @@ beforeEach(async () => {
 
 afterEach(async () => {
   jest.useRealTimers();
-
-  await knex.migrate.rollback();
-  await knex.destroy();
 });
 
 jest.mock("../utils/jwt-token-generate", () =>

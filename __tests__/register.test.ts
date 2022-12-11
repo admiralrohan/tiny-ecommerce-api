@@ -1,25 +1,9 @@
 import request from "supertest";
 import bcrypt from "bcrypt";
 import app from "../app";
-import Knex from "knex";
-import knexConfig from "./../knexfile";
-import { Model } from "objection";
 import Users from "../models/users";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-let knex: any;
 const routePath = "/api/auth/register";
-
-beforeEach(async () => {
-  knex = Knex(knexConfig.test);
-  Model.knex(knex);
-  await knex.migrate.latest();
-});
-
-afterEach(async () => {
-  await knex.migrate.rollback();
-  await knex.destroy();
-});
 
 describe(`POST ${routePath}`, () => {
   it("Without any body", async () => {
