@@ -22,11 +22,15 @@ Then, run the development server:
 npm run dev
 ```
 
-## Other commands
+## Testing
 
 Run test cases `npm t`
 
 Run tests and watch live changes `npm run test:watch`
+
+We are using fake timer for tests. Also we have fresh DB after each test. These two are managed in global setup file `setupTests.ts`.
+
+## Database
 
 Check for migrations `knex migrate:list --env dev` (Available DB envs: `dev`, `prod`, `test`)
 
