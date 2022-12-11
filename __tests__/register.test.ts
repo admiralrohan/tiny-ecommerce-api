@@ -2,6 +2,7 @@ import request from "supertest";
 import bcrypt from "bcrypt";
 import app from "../app";
 import Users from "../models/users";
+import { currentTime } from "../configs/constants";
 
 const routePath = "/api/auth/register";
 
@@ -221,10 +222,6 @@ describe(`POST ${routePath}`, () => {
     const hashPwd = jest.spyOn(bcrypt, "hash");
     hashPwd.mockImplementationOnce(() => "hashedPwd");
 
-    const currentTime = new Date("2022-01-01");
-    jest.useFakeTimers();
-    jest.setSystemTime(currentTime);
-
     // Act
     const requestBody = {
       username: "john",
@@ -253,8 +250,5 @@ describe(`POST ${routePath}`, () => {
       createdAt: currentTime,
       catalog: [],
     });
-
-    // Cleanup
-    jest.useRealTimers();
   });
 });

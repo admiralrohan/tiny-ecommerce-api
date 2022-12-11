@@ -3,14 +3,11 @@ import bcrypt from "bcrypt";
 import app from "../app";
 import Users from "../models/users";
 import Tokens from "../models/tokens";
+import { currentTime } from "../configs/constants";
 
 const routePath = "/api/auth/login";
-const currentTime = new Date("2022-01-01");
 
 beforeEach(async () => {
-  jest.useFakeTimers();
-  jest.setSystemTime(currentTime);
-
   // Need to register a user before login
   await Users.query().insert({
     id: 1,
@@ -21,10 +18,6 @@ beforeEach(async () => {
     createdAt: currentTime,
     catalog: [],
   });
-});
-
-afterEach(async () => {
-  jest.useRealTimers();
 });
 
 jest.mock("../utils/jwt-token-generate", () =>
