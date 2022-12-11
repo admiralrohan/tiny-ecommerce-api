@@ -104,6 +104,7 @@ router.post("/create-order/:seller_id", async (req: Request, res: Response) => {
     res.json({
       success: true,
       message: "Order creation successful",
+      data: {},
     });
   } catch (error) {
     if (error instanceof Error) {

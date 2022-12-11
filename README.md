@@ -41,6 +41,7 @@ Rollback last migration `knex migrate:rollback`
 ## Some assumptions
 
 - API response format `{ success: boolean, message: string, data?: Object, error?: string }`
+  - Either `data` or `error` is must on API response.
 - An user (means an unique email ID) can register as `buyer` or `seller`.
 - `username` isn't unique at this moment.
 - User can sell products and also buy products. But for that need to register twice as different roles.

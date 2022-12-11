@@ -26,6 +26,7 @@ router.post("/create-catalog", async (req: Request, res: Response) => {
     res.json({
       success: true,
       message: "Created seller catalog",
+      data: {},
     });
   } catch (error) {
     if (error instanceof Error) {

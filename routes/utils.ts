@@ -58,7 +58,11 @@ router.post(
 
       if (!insertedResult) throw new Error("DB error");
 
-      res.json({ success: true, message: "Created product successfully" });
+      res.json({
+        success: true,
+        message: "Created product successfully",
+        data: {},
+      });
     } catch (error) {
       if (error instanceof Error) {
         res.status(400).json({
@@ -83,7 +87,11 @@ router.patch(
       const updatedResult = await Products.query().findById(id).patch(req.body);
       if (!updatedResult) throw new Error("Check request body");
 
-      res.json({ success: true, message: "Updated product successfully" });
+      res.json({
+        success: true,
+        message: "Updated product successfully",
+        data: {},
+      });
     } catch (error) {
       if (error instanceof Error) {
         res.status(400).json({
