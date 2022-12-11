@@ -1,10 +1,10 @@
 import Knex from "knex";
 import knexConfig from "./knexfile";
 import { Model } from "objection";
-import { currentTime } from "./configs/constants";
+import { currentTime, mockToken } from "./configs/constants";
 
 jest.mock("./utils/jwt-token-generate", () =>
-  jest.fn().mockReturnValue("token")
+  jest.fn().mockReturnValue(mockToken)
 );
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

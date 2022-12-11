@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import app from "../app";
 import Users from "../models/users";
 import Tokens from "../models/tokens";
-import { currentTime } from "../configs/constants";
+import { currentTime, mockToken } from "../configs/constants";
 
 const routePath = "/api/auth/login";
 
@@ -186,7 +186,7 @@ describe(`POST ${routePath}`, () => {
     expect(response.body).toHaveProperty("message");
     expect(response.body).toHaveProperty("data");
     expect(response.body).not.toHaveProperty("error");
-    expect(response.body.data.token).toBe("token");
+    expect(response.body.data.token).toBe(mockToken);
   });
 
   it("Saved user data in DB properly", async () => {
@@ -204,7 +204,7 @@ describe(`POST ${routePath}`, () => {
       {
         id: 1,
         userId: 1,
-        token: "token",
+        token: mockToken,
         loggedInAt: currentTime,
         loggedOutAt: null,
       },
