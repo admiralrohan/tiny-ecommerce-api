@@ -119,7 +119,24 @@ describe(`POST ${routePath}`, () => {
     expect(response.body.error).toMatch(/match/i);
   });
 
-  it("Without confirmPassword", async () => {
+  it("Without user type", async () => {
+    const response = await request(app)
+      .post(routePath)
+      .set("Accept", "application/json")
+      .send({
+        username: "john",
+        email: "john@gmail.com",
+        password: "1234",
+        confirmPassword: "1234",
+      });
+
+    expect(response.headers["content-type"]).toMatch(/json/i);
+    expect(response.status).toEqual(400);
+    expect(response.body.success).toBeFalsy();
+    expect(response.body.error).toMatch(/invalid/i);
+  });
+
+  it("Without proper user type", async () => {
     const response = await request(app)
       .post(routePath)
       .set("Accept", "application/json")
