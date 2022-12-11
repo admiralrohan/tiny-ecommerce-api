@@ -8,24 +8,11 @@ import buyerRouter from "./routes/buyer";
 import sellerRouter from "./routes/seller";
 import utilsRouter from "./routes/utils";
 
-import Knex from "knex";
-import knexConfig from "./knexfile";
-import { Model } from "objection";
 import { verifyToken } from "./middlewares/verify-token";
 import { allowIfBuyer } from "./middlewares/allow-if-buyer";
 import { allowIfSeller } from "./middlewares/allow-if-seller";
 
 const app: Express = express();
-
-// Initialize knex.
-// TODO: Setup `prod` deployment here
-const knex = Knex(knexConfig.dev);
-
-// Bind all Models to the knex instance. You only
-// need to do this once before you use any of
-// your model classes.
-Model.knex(knex);
-
 app.use(express.json());
 
 app.use("/api/auth", authRouter);
@@ -48,4 +35,4 @@ app.use((req: Request, res: Response) => {
   }
 });
 
-export { app, knex };
+export default app;
