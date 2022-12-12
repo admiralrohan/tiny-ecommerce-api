@@ -4,7 +4,10 @@ import Users from "../models/users";
 import Tokens from "../models/tokens";
 import jwt from "jsonwebtoken";
 import { currentTime, mockToken } from "../configs/constants";
-import { expectSuccessResponse } from "../utils/test-helpers";
+import {
+  expectErrorResponse,
+  expectSuccessResponse,
+} from "../utils/test-helpers";
 
 const routePath = "/api/auth/logout";
 
@@ -34,9 +37,7 @@ describe(`POST ${routePath}`, () => {
       .post(routePath)
       .set("Accept", "application/json");
 
-    expect(response.headers["content-type"]).toMatch(/json/i);
-    expect(response.status).toEqual(401);
-    expect(response.body.success).toBeFalsy();
+    expectErrorResponse(response, { status: 401 });
     expect(response.body.error).toMatch(/token missing/i);
   });
 
