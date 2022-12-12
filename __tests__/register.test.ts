@@ -2,7 +2,7 @@ import request from "supertest";
 import bcrypt from "bcrypt";
 import app from "../app";
 import Users from "../models/users";
-import { currentTime } from "../configs/constants";
+import { currentTime, mockPwd, mockToken } from "../configs/constants";
 import {
   expectErrorResponse,
   expectSuccessResponse,
@@ -193,7 +193,7 @@ describe(`POST ${routePath}`, () => {
   it("Saved user data in DB properly", async () => {
     // Mocking
     const hashPwd = jest.spyOn(bcrypt, "hash");
-    hashPwd.mockImplementationOnce(() => "hashedPwd");
+    hashPwd.mockImplementationOnce(() => mockPwd);
 
     // Act
     const requestBody = {
@@ -218,7 +218,7 @@ describe(`POST ${routePath}`, () => {
       id: 1,
       username: "john",
       email: "john@gmail.com",
-      password: "hashedPwd",
+      password: mockPwd,
       type: "seller",
       createdAt: currentTime,
       catalog: [],

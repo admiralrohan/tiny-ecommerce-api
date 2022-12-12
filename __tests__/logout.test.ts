@@ -3,7 +3,7 @@ import app from "../app";
 import Users from "../models/users";
 import Tokens from "../models/tokens";
 import jwt from "jsonwebtoken";
-import { currentTime, mockToken } from "../configs/constants";
+import { currentTime, mockPwd, mockToken } from "../configs/constants";
 import {
   expectErrorResponse,
   expectSuccessResponse,
@@ -17,7 +17,7 @@ beforeEach(async () => {
     id: 1,
     username: "john",
     email: "john@gmail.com",
-    password: "hashedPwd",
+    password: mockPwd,
     type: "buyer",
     createdAt: currentTime,
     catalog: [],
@@ -73,8 +73,10 @@ describe(`POST ${routePath}`, () => {
       {
         id: 1,
         userId: 1,
-        token: "generatedToken",
+        token: mockToken,
         loggedInAt: currentTime,
+        // Login and logout time will never be same in real scenario, but we just need to verify
+        // whether our program saves current time. We are not increasing the timer to reduce complexity
         loggedOutAt: currentTime,
       },
     ]);

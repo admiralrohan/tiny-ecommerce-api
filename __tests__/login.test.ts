@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import app from "../app";
 import Users from "../models/users";
 import Tokens from "../models/tokens";
-import { currentTime, mockToken } from "../configs/constants";
+import { currentTime, mockPwd, mockToken } from "../configs/constants";
 import {
   expectErrorResponse,
   expectSuccessResponse,
@@ -17,7 +17,7 @@ beforeEach(async () => {
     id: 1,
     username: "john",
     email: "john@gmail.com",
-    password: "hashedPwd",
+    password: mockPwd,
     type: "buyer",
     createdAt: currentTime,
     catalog: [],
