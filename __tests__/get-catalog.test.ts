@@ -150,7 +150,7 @@ describe(`GET ${routePath}/:seller_id`, () => {
     expect(response.body.error).toMatch(/invalid seller_id/i);
   });
 
-  it("Fetch catalog of invalid user - throws error", async () => {
+  it("Fetch catalog of non-existent user - throws error", async () => {
     jest.spyOn(jwt, "verify").mockImplementationOnce(() => ({
       userId: 2,
       token: mockToken,
@@ -159,7 +159,7 @@ describe(`GET ${routePath}/:seller_id`, () => {
 
     // We created only 3 users before tests, and fetching catalog of 10th user
     const response = await request(app)
-      .get("/api/buyer/seller-catalog/10")
+      .get(routePath + "/10")
       .set("Accept", "application/json")
       .set("Authorization", "Bearer " + mockToken);
 
@@ -174,7 +174,7 @@ describe(`GET ${routePath}/:seller_id`, () => {
       userType: "buyer",
     }));
 
-    // Trying to fetch catalog of a user which is a "buyer"
+    // User ID 2 is a "buyer"
     const response = await request(app)
       .get(routePath + "/2")
       .set("Accept", "application/json")
