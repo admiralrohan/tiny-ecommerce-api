@@ -118,6 +118,38 @@ describe(`GET ${routePath}/:seller_id`, () => {
     expect(response.body.error).toMatch(/only available for buyer/i);
   });
 
+  it("Call API without seller_id - throws error", async () => {
+    jest.spyOn(jwt, "verify").mockImplementationOnce(() => ({
+      userId: 2,
+      token: mockToken,
+      userType: "buyer",
+    }));
+
+    const response = await request(app)
+      .get(routePath + "/")
+      .set("Accept", "application/json")
+      .set("Authorization", "Bearer " + mockToken);
+
+    expectErrorResponse(response, { status: 404 });
+  });
+
+  it("Call API with invalid seller_id - throws error", async () => {
+    jest.spyOn(jwt, "verify").mockImplementationOnce(() => ({
+      userId: 2,
+      token: mockToken,
+      userType: "buyer",
+    }));
+
+    // Using string instead of number
+    const response = await request(app)
+      .get(routePath + "/invalid")
+      .set("Accept", "application/json")
+      .set("Authorization", "Bearer " + mockToken);
+
+    expectErrorResponse(response);
+    expect(response.body.error).toMatch(/invalid seller_id/i);
+  });
+
   it("Fetch catalog of invalid user - throws error", async () => {
     jest.spyOn(jwt, "verify").mockImplementationOnce(() => ({
       userId: 2,
