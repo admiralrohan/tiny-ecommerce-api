@@ -53,6 +53,7 @@ router.post(
         name,
         price,
         isActive,
+        ownerId: res.userId,
         createdAt: new Date(),
       });
 
