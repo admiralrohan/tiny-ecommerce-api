@@ -37,9 +37,13 @@ router.get(
   async (req: Request, res: Response) => {
     try {
       const { seller_id: sellerId } = req.params;
+
+      // eg. If user passes string instead of number
+      if (isNaN(Number(sellerId))) throw new Error("Invalid seller_id");
+
       const userDetails = await Users.query()
         .select("catalog", "type")
-        .findById(sellerId);
+        .findById(Number(sellerId));
 
       if (!userDetails) throw new Error("User not found");
 
