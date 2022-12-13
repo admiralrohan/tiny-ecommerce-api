@@ -90,7 +90,7 @@ describe(`GET ${routePath}`, () => {
 
   it("With buyer user - success", async () => {
     jest.spyOn(jwt, "verify").mockImplementationOnce(() => ({
-      userId: 1,
+      userId: 2,
       token: mockToken,
       userType: "buyer",
     }));
