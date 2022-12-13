@@ -10,8 +10,7 @@ import {
 } from "../utils/test-helpers";
 import Products from "../models/product";
 
-// Seller ID 1 is created before tests
-const routePath = "/api/buyer/seller-catalog/1";
+const routePath = "/api/buyer/seller-catalog";
 
 beforeEach(async () => {
   // Register and login some users first
@@ -78,10 +77,10 @@ beforeEach(async () => {
   ]);
 });
 
-describe(`GET ${routePath}`, () => {
+describe(`GET ${routePath}/:seller_id`, () => {
   it("Without token - throws error", async () => {
     const response = await request(app)
-      .get(routePath)
+      .get(routePath + "/1")
       .set("Accept", "application/json");
 
     expectErrorResponse(response, { status: 401 });
@@ -96,7 +95,7 @@ describe(`GET ${routePath}`, () => {
     }));
 
     const response = await request(app)
-      .get(routePath)
+      .get(routePath + "/1")
       .set("Accept", "application/json")
       .set("Authorization", "Bearer " + mockToken);
 
@@ -111,7 +110,7 @@ describe(`GET ${routePath}`, () => {
     }));
 
     const response = await request(app)
-      .get(routePath)
+      .get(routePath + "/1")
       .set("Accept", "application/json")
       .set("Authorization", "Bearer " + mockToken);
 
@@ -145,7 +144,7 @@ describe(`GET ${routePath}`, () => {
 
     // Trying to fetch catalog of a user which is a "buyer"
     const response = await request(app)
-      .get("/api/buyer/seller-catalog/2")
+      .get(routePath + "/2")
       .set("Accept", "application/json")
       .set("Authorization", "Bearer " + mockToken);
 
@@ -161,7 +160,7 @@ describe(`GET ${routePath}`, () => {
     }));
 
     const response = await request(app)
-      .get(routePath)
+      .get(routePath + "/1")
       .set("Accept", "application/json")
       .set("Authorization", "Bearer " + mockToken);
 
