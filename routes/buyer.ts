@@ -48,7 +48,9 @@ router.get(
 
       const productList = await Products.query()
         .whereIn("id", productIds)
-        .andWhere({ isActive: true });
+        .andWhere({ isActive: true })
+        // Rest info is irrelevant from buyer's POV
+        .select("id", "name", "price");
 
       res.json({
         success: true,
