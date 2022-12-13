@@ -58,7 +58,7 @@ beforeEach(async () => {
 });
 
 describe(`GET ${routePath}`, () => {
-  it("Without token - throw error", async () => {
+  it("Without token - throws error", async () => {
     const response = await request(app)
       .get(routePath)
       .set("Accept", "application/json");
@@ -67,7 +67,7 @@ describe(`GET ${routePath}`, () => {
     expect(response.body.error).toMatch(/token missing/i);
   });
 
-  it("With buyer user - allow", async () => {
+  it("With buyer user - success", async () => {
     jest.spyOn(jwt, "verify").mockImplementationOnce(() => ({
       userId: 1,
       token: mockToken,
@@ -82,7 +82,7 @@ describe(`GET ${routePath}`, () => {
     expectSuccessResponse(response);
   });
 
-  it("With seller user - throw error", async () => {
+  it("With seller user - throws error", async () => {
     jest.spyOn(jwt, "verify").mockImplementationOnce(() => ({
       userId: 1,
       token: mockToken,
@@ -98,7 +98,7 @@ describe(`GET ${routePath}`, () => {
     expect(response.body.error).toMatch(/only available for buyer/i);
   });
 
-  it("Proper API response for buyers", async () => {
+  it("Proper API response body for buyers", async () => {
     jest.spyOn(jwt, "verify").mockImplementationOnce(() => ({
       userId: 2,
       token: mockToken,

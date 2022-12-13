@@ -2,7 +2,7 @@ import request from "supertest";
 import bcrypt from "bcrypt";
 import app from "../app";
 import Users from "../models/users";
-import { currentTime, mockPwd, mockToken } from "../configs/constants";
+import { currentTime, mockPwd } from "../configs/constants";
 import {
   expectErrorResponse,
   expectSuccessResponse,
@@ -11,7 +11,7 @@ import {
 const routePath = "/api/auth/register";
 
 describe(`POST ${routePath}`, () => {
-  it("Without any body", async () => {
+  it("Without body - throws error", async () => {
     const response = await request(app)
       .post(routePath)
       .set("Accept", "application/json");
@@ -20,7 +20,7 @@ describe(`POST ${routePath}`, () => {
     expect(response.body.error).toMatch(/username/i);
   });
 
-  it("Without username", async () => {
+  it("Without username - throws error", async () => {
     const response = await request(app)
       .post(routePath)
       .set("Accept", "application/json")
@@ -35,7 +35,7 @@ describe(`POST ${routePath}`, () => {
     expect(response.body.error).toMatch(/username/i);
   });
 
-  it("Without email", async () => {
+  it("Without email - throws error", async () => {
     const response = await request(app)
       .post(routePath)
       .set("Accept", "application/json")
@@ -50,7 +50,7 @@ describe(`POST ${routePath}`, () => {
     expect(response.body.error).toMatch(/email/i);
   });
 
-  it("Without password", async () => {
+  it("Without password - throws error", async () => {
     const response = await request(app)
       .post(routePath)
       .set("Accept", "application/json")
@@ -65,7 +65,7 @@ describe(`POST ${routePath}`, () => {
     expect(response.body.error).toMatch(/password/i);
   });
 
-  it("Without confirmPassword", async () => {
+  it("Without confirmPassword - throws error", async () => {
     const response = await request(app)
       .post(routePath)
       .set("Accept", "application/json")
@@ -80,7 +80,7 @@ describe(`POST ${routePath}`, () => {
     expect(response.body.error).toMatch(/match/i);
   });
 
-  it("With password !== confirmPassword", async () => {
+  it("With password !== confirmPassword - throws error", async () => {
     const response = await request(app)
       .post(routePath)
       .set("Accept", "application/json")
@@ -96,7 +96,7 @@ describe(`POST ${routePath}`, () => {
     expect(response.body.error).toMatch(/match/i);
   });
 
-  it("Without user type", async () => {
+  it("Without user type - throws error", async () => {
     const response = await request(app)
       .post(routePath)
       .set("Accept", "application/json")
@@ -111,7 +111,7 @@ describe(`POST ${routePath}`, () => {
     expect(response.body.error).toMatch(/invalid/i);
   });
 
-  it("Without proper user type", async () => {
+  it("With invalid user type - throws error", async () => {
     const response = await request(app)
       .post(routePath)
       .set("Accept", "application/json")
@@ -127,7 +127,7 @@ describe(`POST ${routePath}`, () => {
     expect(response.body.error).toMatch(/invalid/i);
   });
 
-  it("With proper body", async () => {
+  it("With proper body - success", async () => {
     const response = await request(app)
       .post(routePath)
       .set("Accept", "application/json")
@@ -142,7 +142,7 @@ describe(`POST ${routePath}`, () => {
     expectSuccessResponse(response);
   });
 
-  it("With used email of different user type", async () => {
+  it("With used email of different user type - success", async () => {
     const requestBody = {
       username: "john",
       email: "john@gmail.com",
@@ -166,7 +166,7 @@ describe(`POST ${routePath}`, () => {
     expectSuccessResponse(response);
   });
 
-  it("With used email of same user type", async () => {
+  it("With used email of same user type - throws error", async () => {
     const requestBody = {
       username: "john",
       email: "john@gmail.com",
@@ -190,7 +190,7 @@ describe(`POST ${routePath}`, () => {
     expect(response.body.error).toMatch(/already used/i);
   });
 
-  it("Saved user data in DB properly", async () => {
+  it("Update DB state - success", async () => {
     // Mocking
     const hashPwd = jest.spyOn(bcrypt, "hash");
     hashPwd.mockImplementationOnce(() => mockPwd);

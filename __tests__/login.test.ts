@@ -25,7 +25,7 @@ beforeEach(async () => {
 });
 
 describe(`POST ${routePath}`, () => {
-  it("Without any body", async () => {
+  it("Without body - throws error", async () => {
     const response = await request(app)
       .post(routePath)
       .set("Accept", "application/json");
@@ -34,7 +34,7 @@ describe(`POST ${routePath}`, () => {
     expect(response.body.error).toMatch(/email/i);
   });
 
-  it("Without email", async () => {
+  it("Without email - throws error", async () => {
     const response = await request(app)
       .post(routePath)
       .set("Accept", "application/json")
@@ -49,7 +49,7 @@ describe(`POST ${routePath}`, () => {
     expect(response.body.error).toMatch(/email/i);
   });
 
-  it("Without password", async () => {
+  it("Without password - throws error", async () => {
     const response = await request(app)
       .post(routePath)
       .set("Accept", "application/json")
@@ -64,7 +64,7 @@ describe(`POST ${routePath}`, () => {
     expect(response.body.error).toMatch(/password/i);
   });
 
-  it("Without user type", async () => {
+  it("Without user type - throws error", async () => {
     const response = await request(app)
       .post(routePath)
       .set("Accept", "application/json")
@@ -79,7 +79,7 @@ describe(`POST ${routePath}`, () => {
     expect(response.body.error).toMatch(/invalid/i);
   });
 
-  it("Without proper user type", async () => {
+  it("With invalid user type - throws error", async () => {
     const response = await request(app)
       .post(routePath)
       .set("Accept", "application/json")
@@ -95,7 +95,7 @@ describe(`POST ${routePath}`, () => {
     expect(response.body.error).toMatch(/invalid/i);
   });
 
-  it("Without proper password", async () => {
+  it("Without proper password - throws error", async () => {
     const hashPwd = jest.spyOn(bcrypt, "compare");
     hashPwd.mockImplementationOnce(() => Promise.resolve(false));
 
@@ -112,7 +112,7 @@ describe(`POST ${routePath}`, () => {
     expect(response.body.error).toMatch(/password mismatch/i);
   });
 
-  it("With non-existent email", async () => {
+  it("With non-existent email - throws error", async () => {
     const hashPwd = jest.spyOn(bcrypt, "compare");
     hashPwd.mockImplementationOnce(() => Promise.resolve(true));
 
@@ -129,7 +129,7 @@ describe(`POST ${routePath}`, () => {
     expect(response.body.error).toMatch(/no user found/i);
   });
 
-  it("With proper email but wrong user type", async () => {
+  it("With proper email but wrong user type - throws error", async () => {
     const hashPwd = jest.spyOn(bcrypt, "compare");
     hashPwd.mockImplementationOnce(() => Promise.resolve(true));
 
@@ -146,7 +146,7 @@ describe(`POST ${routePath}`, () => {
     expect(response.body.error).toMatch(/no user found/i);
   });
 
-  it("With proper body", async () => {
+  it("With proper body - success", async () => {
     const hashPwd = jest.spyOn(bcrypt, "compare");
     hashPwd.mockImplementationOnce(() => Promise.resolve(true));
 
@@ -163,7 +163,7 @@ describe(`POST ${routePath}`, () => {
     expect(response.body.data.token).toBe(mockToken);
   });
 
-  it("Saved user data in DB properly", async () => {
+  it("Update DB state - success", async () => {
     const hashPwd = jest.spyOn(bcrypt, "compare");
     hashPwd.mockImplementationOnce(() => Promise.resolve(true));
 

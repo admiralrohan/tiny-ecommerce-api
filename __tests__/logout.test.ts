@@ -32,7 +32,7 @@ beforeEach(async () => {
 });
 
 describe(`POST ${routePath}`, () => {
-  it("Without token", async () => {
+  it("Without token - throws error", async () => {
     const response = await request(app)
       .post(routePath)
       .set("Accept", "application/json");
@@ -41,7 +41,7 @@ describe(`POST ${routePath}`, () => {
     expect(response.body.error).toMatch(/token missing/i);
   });
 
-  it("With token", async () => {
+  it("With token - success", async () => {
     jest.spyOn(jwt, "verify").mockImplementationOnce(() => ({
       userId: 1,
       token: mockToken,
@@ -56,7 +56,7 @@ describe(`POST ${routePath}`, () => {
     expectSuccessResponse(response);
   });
 
-  it("Saved user data in DB properly", async () => {
+  it("Update DB state - success", async () => {
     jest.spyOn(jwt, "verify").mockImplementationOnce(() => ({
       userId: 1,
       token: mockToken,
