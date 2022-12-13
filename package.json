@@ -9,6 +9,7 @@
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/server.js\"",
     "test": "jest --verbose -i",
     "test:watch": "jest --watch -i",
+    "test:coverage": "jest --verbose -i --coverage",
     "lint": "eslint . --ext .ts",
     "lint-and-fix": "eslint . --ext .ts --fix"
   },
