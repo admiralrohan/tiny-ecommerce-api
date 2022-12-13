@@ -11,7 +11,7 @@ import {
  */
 
 describe("GET /", () => {
-  it("responds properly", async () => {
+  it("Responds properly", async () => {
     const response = await request(app)
       .get("/")
       .set("Accept", "application/json");
@@ -22,7 +22,7 @@ describe("GET /", () => {
 });
 
 describe("GET /404", () => {
-  it("responds properly", async () => {
+  it("Responds properly", async () => {
     const response = await request(app)
       .get("/random")
       .set("Accept", "application/json");
@@ -33,7 +33,7 @@ describe("GET /404", () => {
 });
 
 describe("GET /api/utils/user-roles", () => {
-  it("responds properly", async () => {
+  it("Responds properly", async () => {
     const response = await request(app)
       .get("/api/utils/user-roles")
       .set("Accept", "application/json");
