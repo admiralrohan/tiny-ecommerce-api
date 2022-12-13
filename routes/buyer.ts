@@ -83,7 +83,7 @@ router.post("/create-order/:seller_id", async (req: Request, res: Response) => {
     // Validation 1
     const [buyerDetails, sellerDetails] = await Users.query().whereIn("id", [
       res.userId,
-      sellerId,
+      Number(sellerId),
     ]);
 
     if (buyerDetails.email === sellerDetails.email)
@@ -92,7 +92,7 @@ router.post("/create-order/:seller_id", async (req: Request, res: Response) => {
     // Validation 2
     const matchingProducts = await Products.query()
       .whereIn("id", productIds)
-      .andWhere({ isActive: true, ownerId: sellerId });
+      .andWhere({ isActive: true, ownerId: Number(sellerId) });
 
     if (matchingProducts.length !== productIds.length)
       throw new Error("You can only add products from the seller catalog");
