@@ -9,6 +9,9 @@ router.post("/create-catalog", async (req: Request, res: Response) => {
   try {
     const { products } = req.body;
 
+    if (products.length === 0)
+      throw new Error("You need products to create catalog");
+
     const matchingProducts = await Products.query()
       .whereIn("id", products)
       .andWhere({ ownerId: res.userId });
@@ -20,7 +23,6 @@ router.post("/create-catalog", async (req: Request, res: Response) => {
     const insertedResult = await Users.query().findById(res.userId).patch({
       catalog: products,
     });
-
     if (!insertedResult) throw new Error("DB insertion failed");
 
     res.json({
