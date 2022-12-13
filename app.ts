@@ -23,7 +23,7 @@ app.use("/api/utils", utilsRouter);
 
 // Can be used for Server health checks by AWS
 app.get("/", (req: Request, res: Response) => {
-  res.status(200).json({ success: true, message: "Root route" });
+  res.status(200).json({ success: true, message: "Root route", data: {} });
 });
 
 app.use((req: Request, res: Response) => {
@@ -31,7 +31,7 @@ app.use((req: Request, res: Response) => {
 
   // respond with json
   if (req.accepts("json")) {
-    res.json({ success: false, message: "Route not found" });
+    res.json({ success: false, message: "Route not found", error: "" });
   }
 });
 
