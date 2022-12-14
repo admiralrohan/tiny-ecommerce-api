@@ -4,12 +4,12 @@
  */
 
 export const dbClient = process.env.DB_CLIENT;
-export const dbHost = process.env.DB_HOST;
-export const dbUser = process.env.DB_USER;
-export const dbPassword = process.env.DB_PASSWORD;
-export const dbName = process.env.DB_NAME;
-export const dbPort = process.env.DB_PORT;
+export const dbDevUrl = process.env.DB_DEV_URL;
+export const dbProdUrl = process.env.DB_PROD_URL;
+export const dbTestUrl = process.env.DB_TEST_URL;
 
 export const jwtSecret = process.env.JWT_SECRET;
 export const saltRounds = Number(process.env.SALT_ROUNDS) || 10;
 export const jwtExpiresIn = process.env.JWT_EXPIRES_IN || "30d";
+
+export const port = process.env.PORT || 8000;

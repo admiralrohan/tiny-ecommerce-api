@@ -6,6 +6,11 @@ Tech Used: NodeJS, Postgres
 
 Check list of available APIs here https://documenter.getpostman.com/view/3660544/2s8YzQX4NB
 
+Postgres installation guide https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-ubuntu-20-04
+
+Test coverage:
+Stmts 95.36 | Branch 75.67 | Funcs 100 | Lines 97.28
+
 ## Run the project
 
 After cloning the project, install the packages:
@@ -20,9 +25,26 @@ Then, run the development server:
 npm run dev
 ```
 
+## Testing
+
+Run test cases `npm t`
+
+Run tests and watch live changes `npm run test:watch`
+
+We are using fake timer for tests. Also we have fresh DB after each test. These two are managed in global setup file `setupTests.ts`.
+
+## Database
+
+Check for migrations `knex migrate:list --env dev` (Available DB envs: `dev`, `prod`, `test`)
+
+Run all pending migrations `knex migrate:latest --env dev`
+
+Rollback last migration `knex migrate:rollback`
+
 ## Some assumptions
 
 - API response format `{ success: boolean, message: string, data?: Object, error?: string }`
+  - Either `data` or `error` is must on API response.
 - An user (means an unique email ID) can register as `buyer` or `seller`.
 - `username` isn't unique at this moment.
 - User can sell products and also buy products. But for that need to register twice as different roles.

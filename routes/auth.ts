@@ -112,7 +112,9 @@ router.post("/logout", verifyToken, async (req: Request, res: Response) => {
 
     if (!result) throw new Error();
 
-    res.status(200).json({ success: true, message: "Logged out successfully" });
+    res
+      .status(200)
+      .json({ success: true, message: "Logged out successfully", data: {} });
   } catch (error) {
     if (error instanceof Error) {
       res.status(400).json({

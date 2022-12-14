@@ -53,12 +53,17 @@ router.post(
         name,
         price,
         isActive,
+        ownerId: res.userId,
         createdAt: new Date(),
       });
 
       if (!insertedResult) throw new Error("DB error");
 
-      res.json({ success: true, message: "Created product successfully" });
+      res.json({
+        success: true,
+        message: "Created product successfully",
+        data: {},
+      });
     } catch (error) {
       if (error instanceof Error) {
         res.status(400).json({
@@ -78,12 +83,21 @@ router.patch(
   async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
-      if (!id) throw new Error("ID is required");
 
-      const updatedResult = await Products.query().findById(id).patch(req.body);
-      if (!updatedResult) throw new Error("Check request body");
+      // eg. If user passes string instead of number
+      if (isNaN(Number(id))) throw new Error("Invalid product id");
 
-      res.json({ success: true, message: "Updated product successfully" });
+      const productDetail = await Products.query().findById(Number(id));
+      if (productDetail?.ownerId !== res.userId)
+        throw new Error("You can't update products created by others");
+
+      await Products.query().findById(Number(id)).patch(req.body);
+
+      res.json({
+        success: true,
+        message: "Updated product successfully",
+        data: {},
+      });
     } catch (error) {
       if (error instanceof Error) {
         res.status(400).json({

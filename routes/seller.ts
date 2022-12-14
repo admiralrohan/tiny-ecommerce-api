@@ -9,6 +9,9 @@ router.post("/create-catalog", async (req: Request, res: Response) => {
   try {
     const { products } = req.body;
 
+    if (products.length === 0)
+      throw new Error("You need products to create catalog");
+
     const matchingProducts = await Products.query()
       .whereIn("id", products)
       .andWhere({ ownerId: res.userId });
@@ -20,12 +23,12 @@ router.post("/create-catalog", async (req: Request, res: Response) => {
     const insertedResult = await Users.query().findById(res.userId).patch({
       catalog: products,
     });
-
     if (!insertedResult) throw new Error("DB insertion failed");
 
     res.json({
       success: true,
       message: "Created seller catalog",
+      data: {},
     });
   } catch (error) {
     if (error instanceof Error) {
@@ -59,7 +62,7 @@ router.get("/orders", async (req: Request, res: Response) => {
         "o.completedAt"
       )) as OrderPlus[];
 
-    // Find unique productIDs
+    // Find unique productIDs, to cache them locally. Otherwise I have to query the DB for each product.
     const uniqueProductIds = new Set<number>();
     ordersResponse.forEach((order) => {
       order.productIds.forEach((productId) => {
@@ -69,7 +72,7 @@ router.get("/orders", async (req: Request, res: Response) => {
 
     // Remove "ownerId", redundant info as all products are owned by seller itself
     const productList = await Products.query()
-      .select("id", "name", "price", "isActive", "createdAt")
+      .select("id", "name", "price")
       .whereIn("id", Array.from(uniqueProductIds));
 
     // Construct the final response

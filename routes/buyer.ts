@@ -37,9 +37,13 @@ router.get(
   async (req: Request, res: Response) => {
     try {
       const { seller_id: sellerId } = req.params;
+
+      // eg. If user passes string instead of number
+      if (isNaN(Number(sellerId))) throw new Error("Invalid seller_id");
+
       const userDetails = await Users.query()
         .select("catalog", "type")
-        .findById(sellerId);
+        .findById(Number(sellerId));
 
       if (!userDetails) throw new Error("User not found");
 
@@ -48,7 +52,9 @@ router.get(
 
       const productList = await Products.query()
         .whereIn("id", productIds)
-        .andWhere({ isActive: true });
+        .andWhere({ isActive: true })
+        // Rest info is irrelevant from buyer's POV
+        .select("id", "name", "price");
 
       res.json({
         success: true,
@@ -74,21 +80,25 @@ router.post("/create-order/:seller_id", async (req: Request, res: Response) => {
     const { seller_id: sellerId } = req.params;
     const { productIds } = req.body;
 
-    // Validation 1
-    const [buyerDetails, sellerDetails] = await Users.query().whereIn("id", [
-      res.userId,
-      sellerId,
-    ]);
+    if (productIds.length === 0)
+      throw new Error("You need products to create order");
 
+    const buyerDetails = await Users.query().findById(res.userId);
+    const sellerDetails = await Users.query().findById(Number(sellerId));
+
+    if (!buyerDetails) throw new Error("Buyer not found");
+    if (!sellerDetails) throw new Error("Seller not found");
+
+    if (sellerDetails.type !== "seller")
+      throw new Error("User is not a seller");
     if (buyerDetails.email === sellerDetails.email)
       throw new Error("Can't buy from same user");
 
-    // Validation 2
-    const matchingProducts = await Products.query()
-      .whereIn("id", productIds)
-      .andWhere({ isActive: true, ownerId: sellerId });
-
-    if (matchingProducts.length !== productIds.length)
+    // Check if all products are included in seller catalog
+    const filteredList = productIds.filter((productId: number) =>
+      sellerDetails.catalog.includes(productId)
+    );
+    if (filteredList.length !== productIds.length)
       throw new Error("You can only add products from the seller catalog");
 
     // Validation done, now create the order
@@ -98,12 +108,12 @@ router.post("/create-order/:seller_id", async (req: Request, res: Response) => {
       productIds,
       createdAt: new Date(),
     });
-
     if (!insertedResult.id) throw new Error("DB error");
 
     res.json({
       success: true,
       message: "Order creation successful",
+      data: {},
     });
   } catch (error) {
     if (error instanceof Error) {
