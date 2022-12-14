@@ -8,6 +8,9 @@ Check list of available APIs here https://documenter.getpostman.com/view/3660544
 
 Postgres installation guide https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-ubuntu-20-04
 
+Test coverage:
+Stmts 95.36 | Branch 75.67 | Funcs 100 | Lines 97.28
+
 ## Run the project
 
 After cloning the project, install the packages:
