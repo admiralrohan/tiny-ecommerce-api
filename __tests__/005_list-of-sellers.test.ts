@@ -2,11 +2,11 @@ import request from "supertest";
 import app from "../app";
 import Users from "../models/users";
 import Tokens from "../models/tokens";
-import jwt from "jsonwebtoken";
 import { currentTime, mockPwd, mockToken } from "../configs/constants";
 import {
   expectErrorResponse,
   expectSuccessResponse,
+  loginAs,
 } from "../utils/test-helpers";
 
 const routePath = "/api/buyer/list-of-sellers";
@@ -68,11 +68,7 @@ describe(`GET ${routePath}`, () => {
   });
 
   it("With buyer user - success", async () => {
-    jest.spyOn(jwt, "verify").mockImplementationOnce(() => ({
-      userId: 1,
-      token: mockToken,
-      userType: "buyer",
-    }));
+    loginAs(2, "buyer");
 
     const response = await request(app)
       .get(routePath)
@@ -83,11 +79,7 @@ describe(`GET ${routePath}`, () => {
   });
 
   it("With seller user - throws error", async () => {
-    jest.spyOn(jwt, "verify").mockImplementationOnce(() => ({
-      userId: 1,
-      token: mockToken,
-      userType: "seller",
-    }));
+    loginAs(1, "seller");
 
     const response = await request(app)
       .get(routePath)
@@ -99,11 +91,7 @@ describe(`GET ${routePath}`, () => {
   });
 
   it("Proper API response body for buyers", async () => {
-    jest.spyOn(jwt, "verify").mockImplementationOnce(() => ({
-      userId: 2,
-      token: mockToken,
-      userType: "buyer",
-    }));
+    loginAs(2, "buyer");
 
     const response = await request(app)
       .get(routePath)

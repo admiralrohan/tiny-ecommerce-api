@@ -1,4 +1,6 @@
 import { Response } from "supertest";
+import { mockToken, userTypes } from "../configs/constants";
+import jwt from "jsonwebtoken";
 
 /**
  * Extra options which can be passed optionally to change testing behavior
@@ -35,4 +37,16 @@ export function expectErrorResponse(
   expect(response.body).toHaveProperty("message");
   expect(response.body).not.toHaveProperty("data");
   expect(response.body).toHaveProperty("error");
+}
+
+/**
+ * Mock jwt.verify() once. Is is the function used to extract data from token inside auth middleware. \
+ * Remove boilerplate code.
+ */
+export function loginAs(userId: number, userType: "buyer" | "seller") {
+  jest.spyOn(jwt, "verify").mockImplementationOnce(() => ({
+    userId,
+    token: mockToken,
+    userType,
+  }));
 }

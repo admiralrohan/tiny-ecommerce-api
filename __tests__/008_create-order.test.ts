@@ -2,11 +2,11 @@ import request from "supertest";
 import app from "../app";
 import Users from "../models/users";
 import Tokens from "../models/tokens";
-import jwt from "jsonwebtoken";
 import { currentTime, mockPwd, mockToken } from "../configs/constants";
 import {
   expectErrorResponse,
   expectSuccessResponse,
+  loginAs,
 } from "../utils/test-helpers";
 import Products from "../models/product";
 import Orders from "../models/order";
@@ -110,11 +110,7 @@ describe(`GET ${routePath}/:seller_id`, () => {
   });
 
   it("With buyer user - success", async () => {
-    jest.spyOn(jwt, "verify").mockImplementationOnce(() => ({
-      userId: 2,
-      token: mockToken,
-      userType: "buyer",
-    }));
+    loginAs(2, "buyer");
 
     const response = await request(app)
       .post(routePath + "/1")
@@ -126,11 +122,7 @@ describe(`GET ${routePath}/:seller_id`, () => {
   });
 
   it("With seller user - throws error", async () => {
-    jest.spyOn(jwt, "verify").mockImplementationOnce(() => ({
-      userId: 1,
-      token: mockToken,
-      userType: "seller",
-    }));
+    loginAs(1, "seller");
 
     const response = await request(app)
       .post(routePath)
@@ -143,11 +135,7 @@ describe(`GET ${routePath}/:seller_id`, () => {
   });
 
   it("Create order with no product - throws error", async () => {
-    jest.spyOn(jwt, "verify").mockImplementationOnce(() => ({
-      userId: 2,
-      token: mockToken,
-      userType: "buyer",
-    }));
+    loginAs(2, "buyer");
 
     const response = await request(app)
       .post(routePath + "/1")
@@ -160,11 +148,7 @@ describe(`GET ${routePath}/:seller_id`, () => {
   });
 
   it("Create catalog with non-existent product - throws error", async () => {
-    jest.spyOn(jwt, "verify").mockImplementationOnce(() => ({
-      userId: 2,
-      token: mockToken,
-      userType: "buyer",
-    }));
+    loginAs(2, "buyer");
 
     const response = await request(app)
       .post(routePath + "/1")
@@ -180,11 +164,7 @@ describe(`GET ${routePath}/:seller_id`, () => {
 
   // eslint-disable-next-line max-len
   it("Create catalog with product outside of catalog - throws error", async () => {
-    jest.spyOn(jwt, "verify").mockImplementationOnce(() => ({
-      userId: 2,
-      token: mockToken,
-      userType: "buyer",
-    }));
+    loginAs(2, "buyer");
 
     const response = await request(app)
       .post(routePath + "/1")
@@ -199,11 +179,7 @@ describe(`GET ${routePath}/:seller_id`, () => {
   });
 
   it("Create order from invalid user - throws error", async () => {
-    jest.spyOn(jwt, "verify").mockImplementationOnce(() => ({
-      userId: 2,
-      token: mockToken,
-      userType: "buyer",
-    }));
+    loginAs(2, "buyer");
 
     // We created only 3 users before tests, and fetching catalog of 10th user
     const response = await request(app)
@@ -217,11 +193,7 @@ describe(`GET ${routePath}/:seller_id`, () => {
   });
 
   it("Create order from buyer user - throws error", async () => {
-    jest.spyOn(jwt, "verify").mockImplementationOnce(() => ({
-      userId: 2,
-      token: mockToken,
-      userType: "buyer",
-    }));
+    loginAs(2, "buyer");
 
     const response = await request(app)
       .post(routePath + "/4")
@@ -234,11 +206,7 @@ describe(`GET ${routePath}/:seller_id`, () => {
   });
 
   it("Buying from same user - throws error", async () => {
-    jest.spyOn(jwt, "verify").mockImplementationOnce(() => ({
-      userId: 4,
-      token: mockToken,
-      userType: "buyer",
-    }));
+    loginAs(4, "buyer");
 
     const response = await request(app)
       .post(routePath + "/1")
@@ -251,11 +219,7 @@ describe(`GET ${routePath}/:seller_id`, () => {
   });
 
   it("Update DB state - success", async () => {
-    jest.spyOn(jwt, "verify").mockImplementationOnce(() => ({
-      userId: 2,
-      token: mockToken,
-      userType: "buyer",
-    }));
+    loginAs(2, "buyer");
 
     await request(app)
       .post(routePath + "/1")

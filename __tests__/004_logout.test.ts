@@ -2,11 +2,11 @@ import request from "supertest";
 import app from "../app";
 import Users from "../models/users";
 import Tokens from "../models/tokens";
-import jwt from "jsonwebtoken";
 import { currentTime, mockPwd, mockToken } from "../configs/constants";
 import {
   expectErrorResponse,
   expectSuccessResponse,
+  loginAs,
 } from "../utils/test-helpers";
 
 const routePath = "/api/auth/logout";
@@ -42,11 +42,7 @@ describe(`POST ${routePath}`, () => {
   });
 
   it("With token - success", async () => {
-    jest.spyOn(jwt, "verify").mockImplementationOnce(() => ({
-      userId: 1,
-      token: mockToken,
-      userType: "buyer",
-    }));
+    loginAs(1, "buyer");
 
     const response = await request(app)
       .post(routePath)
@@ -57,11 +53,7 @@ describe(`POST ${routePath}`, () => {
   });
 
   it("Update DB state - success", async () => {
-    jest.spyOn(jwt, "verify").mockImplementationOnce(() => ({
-      userId: 1,
-      token: mockToken,
-      userType: "buyer",
-    }));
+    loginAs(1, "buyer");
 
     await request(app)
       .post(routePath)

@@ -1,5 +1,4 @@
 import request from "supertest";
-import jwt from "jsonwebtoken";
 import app from "../app";
 import { currentTime, mockPwd, mockToken } from "../configs/constants";
 import Products from "../models/product";
@@ -8,6 +7,7 @@ import Users from "../models/users";
 import {
   expectErrorResponse,
   expectSuccessResponse,
+  loginAs,
 } from "../utils/test-helpers";
 
 const routePath = "/api/utils/products";
@@ -63,11 +63,7 @@ describe("GET /api/utils/products", () => {
   });
 
   it("Responds properly", async () => {
-    jest.spyOn(jwt, "verify").mockImplementationOnce(() => ({
-      userId: 1,
-      token: mockToken,
-      userType: "seller",
-    }));
+    loginAs(1, "seller");
 
     const response = await request(app)
       .get(routePath)
@@ -90,11 +86,7 @@ describe("GET /api/utils/products", () => {
 
 describe("POST /api/utils/products", () => {
   it("Without name - throws error", async () => {
-    jest.spyOn(jwt, "verify").mockImplementationOnce(() => ({
-      userId: 1,
-      token: mockToken,
-      userType: "seller",
-    }));
+    loginAs(1, "seller");
 
     const response = await request(app)
       .post(routePath)
@@ -110,11 +102,7 @@ describe("POST /api/utils/products", () => {
   });
 
   it("Without price - throws error", async () => {
-    jest.spyOn(jwt, "verify").mockImplementationOnce(() => ({
-      userId: 1,
-      token: mockToken,
-      userType: "seller",
-    }));
+    loginAs(1, "seller");
 
     const response = await request(app)
       .post(routePath)
@@ -130,11 +118,7 @@ describe("POST /api/utils/products", () => {
   });
 
   it("Without isActive - throws error", async () => {
-    jest.spyOn(jwt, "verify").mockImplementationOnce(() => ({
-      userId: 1,
-      token: mockToken,
-      userType: "seller",
-    }));
+    loginAs(1, "seller");
 
     const response = await request(app)
       .post(routePath)
@@ -150,11 +134,7 @@ describe("POST /api/utils/products", () => {
   });
 
   it("Proper API response body for valid scenario", async () => {
-    jest.spyOn(jwt, "verify").mockImplementationOnce(() => ({
-      userId: 1,
-      token: mockToken,
-      userType: "seller",
-    }));
+    loginAs(1, "seller");
 
     const response = await request(app)
       .post(routePath)
@@ -170,11 +150,7 @@ describe("POST /api/utils/products", () => {
   });
 
   it("Update DB state - success", async () => {
-    jest.spyOn(jwt, "verify").mockImplementationOnce(() => ({
-      userId: 1,
-      token: mockToken,
-      userType: "seller",
-    }));
+    loginAs(1, "seller");
 
     await request(app)
       .post(routePath)
@@ -215,11 +191,7 @@ describe("PATCH /api/utils/products", () => {
   });
 
   it("Without id param - throws error", async () => {
-    jest.spyOn(jwt, "verify").mockImplementationOnce(() => ({
-      userId: 1,
-      token: mockToken,
-      userType: "seller",
-    }));
+    loginAs(1, "seller");
 
     const response = await request(app)
       .patch(routePath)
@@ -246,11 +218,7 @@ describe("PATCH /api/utils/products", () => {
   });
 
   it("Updating products of others - throws error", async () => {
-    jest.spyOn(jwt, "verify").mockImplementationOnce(() => ({
-      userId: 2,
-      token: mockToken,
-      userType: "seller",
-    }));
+    loginAs(2, "seller");
 
     const response = await request(app)
       .patch(routePath + "/1")
@@ -268,11 +236,7 @@ describe("PATCH /api/utils/products", () => {
   });
 
   it("Proper API response body for valid scenario", async () => {
-    jest.spyOn(jwt, "verify").mockImplementationOnce(() => ({
-      userId: 1,
-      token: mockToken,
-      userType: "seller",
-    }));
+    loginAs(1, "seller");
 
     const response = await request(app)
       .patch(routePath + "/1")
@@ -287,11 +251,7 @@ describe("PATCH /api/utils/products", () => {
   });
 
   it("Update DB state - success", async () => {
-    jest.spyOn(jwt, "verify").mockImplementationOnce(() => ({
-      userId: 1,
-      token: mockToken,
-      userType: "seller",
-    }));
+    loginAs(1, "seller");
 
     await request(app)
       .patch(routePath + "/1")
